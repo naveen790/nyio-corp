@@ -27,6 +27,12 @@ export const metadata: Metadata = {
     type: "website",
   },
 
+  icons: {
+    icon: '/favicon.ico', // Standard browser tab icon
+    shortcut: '/favicon.ico', // Bookmark icon for older browsers
+    apple: '/apple-touch-icon.png', // Home screen icon for iPhones
+  },
+
   // Twitter (X) Card
   twitter: {
     card: "summary_large_image",
