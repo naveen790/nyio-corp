@@ -41,11 +41,6 @@ export const metadata: Metadata = {
     images: ["/og-image.jpg"],
   },
 
-  // Standard Favicons
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
 };
 
 export const viewport: Viewport = {
