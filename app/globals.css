@@ -1,0 +1,120 @@
+/* 1. ALL IMPORTS MUST BE AT THE ABSOLUTE TOP */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import "tailwindcss";
+
+
+@theme {
+  /* =========================
+     PREMIUM BRAND PALETTE
+  ========================== */
+  --color-brand-gold: #C5A059;
+  --color-brand-cream: #F9F8F3;
+  --color-brand-slate: #1A1C1E;
+  --color-brand-accent: #E8DCC4;
+
+  /* =========================
+     SURFACE SYSTEM
+  ========================== */
+  --color-surface-light: #FFFFFF;
+  --color-surface-muted: #F3F2ED;
+
+  /* =========================
+     TYPOGRAPHY CONSTANTS
+  ========================== */
+  --font-heading: "Playfair Display", serif;
+  --font-body: "Inter", sans-serif;
+
+  /* =========================
+     SHADOW SYSTEM
+  ========================== */
+  --shadow-premium: 0 20px 50px rgba(26, 28, 30, 0.08);
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.08);
+
+  /* =========================
+     ANIMATION
+  ========================== */
+  --animate-infinite-scroll: infinite-scroll 40s linear infinite;
+
+  @keyframes infinite-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+}
+
+/* =========================
+   GLOBAL BASE STYLING
+========================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-brand-cream);
+  color: var(--color-brand-slate);
+  font-family: var(--font-body);
+  @apply antialiased text-[15px] leading-relaxed;
+}
+
+/* =========================
+   TYPOGRAPHY HIERARCHY
+========================= */
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  @apply tracking-tight font-serif;
+}
+
+h1 {
+  @apply text-5xl md:text-8xl;
+}
+
+h2 {
+  @apply text-4xl md:text-6xl;
+}
+
+h3 {
+  @apply text-2xl md:text-3xl;
+}
+
+/* Harmonized text color using color-mix */
+p {
+  color: color-mix(in srgb, var(--color-brand-slate), transparent 30%);
+  @apply leading-relaxed;
+}
+
+/* =========================
+   PREMIUM UTILITIES
+========================= */
+
+.btn-premium {
+  @apply px-8 py-4 rounded-full transition-all duration-500 font-medium tracking-widest text-[10px] uppercase inline-block text-center cursor-pointer;
+  background-color: var(--color-brand-slate);
+  color: white;
+  border: 1px solid transparent;
+}
+
+.btn-premium:hover {
+  @apply -translate-y-1;
+  background-color: transparent;
+  color: var(--color-brand-slate);
+  border-color: var(--color-brand-gold);
+  box-shadow: var(--shadow-premium);
+}
+
+.card-surface {
+  background-color: var(--color-surface-light);
+  border-radius: 2px;
+  box-shadow: var(--shadow-soft);
+  @apply border border-zinc-100 transition-all duration-500 hover:shadow-medium;
+}
+
+.glass-nav {
+  @apply bg-white/70 backdrop-blur-xl border-b border-brand-gold/10;
+}
+
+::selection {
+  background-color: var(--color-brand-gold);
+  color: white;
+}
