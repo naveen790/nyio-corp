@@ -20,7 +20,7 @@ import mensScm005 from '@/public/products/mens/scm_005.png';
 import { StaticImageData } from 'next/image';
 
 export const CLIENT_LOGOS = [
-  "Five Below", "GAP", "Disney", "Walmart", "Dollarama", "TJ Maxx"
+  "Five Below", "Next", "Disney", "Walmart", "Ann Summers", "TJ Maxx", "Pepco", "Nui Organics", "Mothercare",  "Dollarama"
 ];
 
 
