@@ -10,7 +10,7 @@ interface ProductSpecs {
 }
 
 interface PRODUCT {
-  id: number;
+  id: string | number;
   name: string;
   category: string;
   image: string | StaticImageData;
@@ -22,8 +22,6 @@ export default function Gallery() {
   const [selectedProduct, setSelectedProduct] = useState<null | PRODUCT>(null);
   const [activeCategory, setActiveCategory] = useState('All');
 
-  // --- FIX 1: Body Scroll Lock ---
-  // Prevents the background from scrolling while the specification modal is open
   useEffect(() => {
     if (selectedProduct) {
       document.body.style.overflow = 'hidden';
@@ -43,17 +41,17 @@ export default function Gallery() {
     ? PRODUCTS 
     : PRODUCTS.filter(p => p.category === activeCategory);
 
-  // --- FIX 2: Enhanced Inquiry Scroll ---
   const handleInquiry = () => {
     const event = new CustomEvent('productInquiry', { 
-      detail: { productName: selectedProduct?.name } 
+      detail: { 
+        productName: selectedProduct?.name,
+        productId: selectedProduct?.id 
+      } 
     });
     window.dispatchEvent(event);
     
-    // Close modal first
     setSelectedProduct(null);
     
-    // Wait for modal exit animation before scrolling
     setTimeout(() => {
       const contactSection = document.getElementById('contact');
       if (contactSection) {
@@ -126,7 +124,7 @@ export default function Gallery() {
                 <div className="flex justify-between items-start px-1">
                   <div className="space-y-1">
                     <p className="text-[9px] uppercase tracking-[0.4em] text-brand-gold font-bold">{product.category}</p>
-                    <h3 className="font-serif text-2xl tracking-tight text-brand-dark group-hover:text-brand-gold transition-colors">{product.name}</h3>
+                    {/* <h3 className="font-serif text-2xl tracking-tight text-brand-dark group-hover:text-brand-gold transition-colors">{product.name}</h3> */}
                   </div>
                   <div className="h-[1px] w-6 bg-brand-sand mt-4 group-hover:w-10 group-hover:bg-brand-gold transition-all duration-500"></div>
                 </div>
@@ -150,33 +148,40 @@ export default function Gallery() {
               initial={{ y: 50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 30, opacity: 0 }}
-              // FIX 3: Container uses max-h and flex-col to prevent button burying
               className="bg-brand-cream text-brand-dark max-w-6xl w-full h-full md:h-auto md:max-h-[90vh] flex flex-col lg:grid lg:grid-cols-2 overflow-hidden shadow-2xl relative"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button - Glassmorphism style for visibility */}
+              {/* Floating Close Button */}
               <button 
                 onClick={() => setSelectedProduct(null)}
-                className="absolute top-4 right-4 z-50 p-3 bg-white/20 backdrop-blur-lg border border-white/30 rounded-full text-brand-dark lg:text-white hover:text-brand-gold transition-all"
+                className="absolute top-4 right-4 z-50 p-3 bg-brand-dark/10 backdrop-blur-lg border border-brand-dark/20 rounded-full text-brand-dark hover:text-brand-gold transition-all"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
 
-              {/* Modal Image Section */}
-              <div className="relative h-[40vh] lg:h-full w-full bg-brand-linen">
-                <Image src={selectedProduct.image} alt={selectedProduct.name} fill priority className="object-cover" />
+              {/* SCROLLABLE IMAGE SECTION */}
+              <div className="relative h-[50vh] lg:h-full w-full bg-brand-linen overflow-y-auto no-scrollbar border-r border-brand-sand/20">
+                <div className="relative w-full min-h-full">
+                   <Image 
+                    src={selectedProduct.image} 
+                    alt={selectedProduct.name} 
+                    width={1200} 
+                    height={1600}
+                    className="w-full h-auto object-contain block" 
+                   />
+                </div>
               </div>
 
-              {/* Modal Content Section - FIX 4: Scrollable content area */}
+              {/* SCROLLABLE CONTENT SECTION */}
               <div className="p-8 md:p-12 lg:p-16 flex flex-col overflow-y-auto">
                  <span className="text-brand-gold text-[9px] uppercase tracking-[0.6em] font-bold mb-4 block">
                    {selectedProduct.category}
                  </span>
-                 <h2 className="font-serif italic text-3xl md:text-5xl mb-6 text-brand-dark">
+                 {/* <h2 className="font-serif italic text-3xl md:text-5xl mb-6 text-brand-dark">
                    {selectedProduct.name}
-                 </h2>
+                 </h2> */}
                  
                  <p className="text-brand-sage font-light mb-8 text-base leading-relaxed italic">
                     {selectedProduct.details}
@@ -198,7 +203,7 @@ export default function Gallery() {
 
                  <button 
                   onClick={handleInquiry}
-                  className="btn-premium w-full py-5 shrink-0"
+                  className="btn-premium w-full py-5 shrink-0 mt-auto"
                  >
                     Inquire this Style
                  </button>

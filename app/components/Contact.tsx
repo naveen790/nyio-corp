@@ -18,8 +18,13 @@ export default function Contact() {
 
   useEffect(() => {
     const handleInquiryEvent = (event: any) => {
+      // Extract both Name and ID from the custom event
       const pName = event.detail.productName;
-      const template = `I am interested in discussing production for the ${pName}. Please provide more information regarding MOQs and customization options.`;
+      const pId = event.detail.productId;
+      
+      // Included the Product ID (e.g., SAN001) in the template for precision
+      const template = `I am interested in discussing production for the ${pName} (Ref: ${pId}). Please provide more information and customization options for this specific style.`;
+      
       setMessage(template);
       
       const element = document.getElementById('contact');
