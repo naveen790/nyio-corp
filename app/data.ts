@@ -148,14 +148,14 @@ export const PRODUCTS: PRODUCT[] = [
     specs: { Fabric: "100% Cotton Fleece 280 GSM", Color: "Forest Green" },
   },
 
-  // {
-  //   id: "SAN021",
-  //   name: "Performance Tech Knit",
-  //   category: "Men",
-  //   image: mens021,
-  //   details: "Moisture-wicking active jersey engineered for high-performance athletic lifestyle brands.",
-  //   specs: { Fabric: "Tech-Cotton Blend", Color: "Phantom" },
-  // },
+  {
+    id: "SAN021",
+    name: "Heritage Polo Shirt",
+    category: "Men",
+    image: mens021,
+    details: "This athletic-inspired polo shirt is designed for a modern, tailored fit that includes distinctive heritage-style patches and color-blocked detailing.",
+    specs: { Fabric: "100% Organic Cotton 200 GSM", Color: "Navy Blue" },
+  },
   // {
   //   id: "SAN022",
   //   name: "Heritage Box Tee",
