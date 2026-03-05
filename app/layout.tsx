@@ -7,23 +7,29 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 
 export const metadata: Metadata = {
   title: 'Greenlink Apparel | Direct B2B Apparel Sourcing & Production',
-  description: 'Connect with world-class, retail-ready garment manufacturing in South Asia and beyond. Greenlink Apparel is a NY-based agency providing ethical B2B supply chain solutions for International brands.',
+  description: 'Connect with world-class, retail-ready garment manufacturing in India, Bangladesh, China, SE Asia and beyond. Greenlink Apparel is a US based agency providing ethical B2B supply chain solutions for International brands.',
   
   keywords: [
+    "Greenlink Apparel", 
+    "Greenlink",
     "Direct factory clothing sourcing India to USA",
+    "Direct factory clothing sourcing India to Europe",
+    "Direct factory clothing sourcing Bangladesh to USA",
     "Private label knitwear manufacturer India",
     "Ethical retail-ready apparel production",
     "US brand garment export manufacturing",
     "Sustainable B2B clothing supplier India",
     "direct apparel manufacturer India",
     "apparel sourcing agency New York",
-    "Tirupur garment export manufacturing",
+    "apparel sourcing agency US",
+    "apparel sourcing agency New Jersey",
     "India to US apparel supply chain",
+    "India to Europe apparel supply chain",
   ],
 
   openGraph: {
     title: "Greenlink Apparel | Direct B2B Apparel Sourcing & Production",
-    description: "The trusted New York agency bridging American brands to ethical, high-volume apparel manufacturing in India. Streamline your production from design to delivery.",
+    description: "The trusted New York agency bridging American brands to ethical, high-volume apparel manufacturing in India, Bangladesh, China and SE.Asia. Streamline your production from design to delivery.",
     url: "https://greenlinkapparel.com",
     siteName: "Greenlink Apparel",
     images: [
