@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nyio Corp — Enterprise Data & AI Consultancy</title>
+
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="apple-touch-icon" href="assets/logo.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a0a0f'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='Georgia,serif' font-weight='700' fill='%23b8975a'>N</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --ink: #0a0a0f;
+    --ink-2: #1a1a24;
+    --ink-3: #2a2a38;
+    --silver: #8a8a9a;
+    --silver-light: #c4c4d0;
+    --cream: #f5f3ee;
+    --cream-2: #ede9e0;
+    --gold: #b8975a;
+    --gold-light: #d4b07a;
+    --gold-pale: #f0e8d5;
+    --white: #fafaf8;
+    --border: rgba(184,151,90,0.2);
+    --border-subtle: rgba(138,138,154,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed; width: 8px; height: 8px;
+    background: var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 10000;
+    transition: transform 0.15s ease, opacity 0.3s;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    position: fixed; width: 32px; height: 32px;
+    border: 1px solid rgba(184,151,90,0.5); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transition: transform 0.4s ease, width 0.3s, height 0.3s, opacity 0.3s;
+    transform: translate(-50%, -50%);
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+    padding: 1.4rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(10,10,15,0.96), transparent);
+    backdrop-filter: blur(2px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.4s, background 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(10,10,15,0.97);
+    border-bottom-color: var(--border-subtle);
+  }
+  .nav-logo-container {
+    display: flex; align-items: center; gap: 12px; text-decoration: none;
+  }
+  .logo-img { height: 30px; width: auto; }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; line-height: 1;
+  }
+  .nav-logo .word-nyio { color: var(--white); }
+  .nav-logo .word-corp { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--silver); text-decoration: none;
+    transition: color 0.25s; position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -3px; left: 0; right: 0;
+    height: 1px; background: var(--gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--cream); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* HERO */
+  #hero {
+    min-height: 78vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 6rem 4rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 65% 40%, rgba(184,151,90,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 80% at 10% 80%, rgba(42,42,56,0.5) 0%, transparent 50%),
+      linear-gradient(160deg, #0a0a0f 0%, #12121c 40%, #0f0f18 100%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(184,151,90,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(184,151,90,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 70% at 60% 50%, black 20%, transparent 80%);
+  }
+  .hero-line {
+    position: absolute; top: 0; left: 4rem;
+    width: 1px; height: 30%;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    opacity: 0.35; animation: lineGrow 2s ease forwards;
+  }
+  @keyframes lineGrow {
+    from { height: 0; opacity: 0; }
+    to { height: 30%; opacity: 0.35; }
+  }
+  .hero-tag {
+    position: relative; z-index: 1;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem; font-weight: 300; letter-spacing: 0.22em;
+    color: var(--gold); text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    opacity: 0; animation: fadeUp 0.9s 0.3s ease forwards;
+  }
+  .hero-title {
+    position: relative; z-index: 1;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.6rem, 5vw, 5.2rem);
+    font-weight: 300; line-height: 1.1;
+    color: var(--white); max-width: 860px;
+    opacity: 0; animation: fadeUp 0.9s 0.5s ease forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--gold-light); }
+  .hero-sub {
+    position: relative; z-index: 1;
+    font-size: 1rem; font-weight: 300; color: var(--silver);
+    max-width: 540px; margin-top: 1.4rem; line-height: 1.85;
+    opacity: 0; animation: fadeUp 0.9s 0.7s ease forwards;
+  }
+  .hero-stats {
+    position: absolute; right: 4rem; bottom: 4rem; z-index: 1;
+    display: flex; flex-direction: column; gap: 2rem; align-items: flex-end;
+    opacity: 0; animation: fadeIn 1s 1.2s ease forwards;
+  }
+  .stat { text-align: right; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem; font-weight: 300; color: var(--white); line-height: 1;
+  }
+  .stat-num span { color: var(--gold); }
+  .stat-label {
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--silver); margin-top: 0.2rem;
+  }
+  .stat-divider {
+    width: 1px; height: 1.5rem;
+    background: var(--border); align-self: flex-end;
+  }
+  .scroll-hint {
+    position: absolute; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+    z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    opacity: 0; animation: fadeIn 1s 1.5s ease forwards;
+  }
+  .scroll-hint span {
+    font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--silver);
+  }
+  .scroll-dot {
+    width: 1px; height: 36px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  /* TICKER */
+  .ticker {
+    background: var(--ink-2);
+    border-top: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.85rem 0; overflow: hidden;
+  }
+  .ticker-track {
+    display: flex; gap: 0; white-space: nowrap;
+    animation: ticker 30s linear infinite;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .ticker-item {
+    display: inline-flex; align-items: center; gap: 0.8rem;
+    padding: 0 2.5rem;
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--silver); font-weight: 400;
+  }
+  .ticker-item .dot { color: var(--gold); font-size: 0.5rem; }
+
+  /* SECTIONS */
+  section { padding: 8rem 4rem; position: relative; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-label::before {
+    content: ''; display: inline-block; width: 24px; height: 1px; background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+    font-weight: 300; line-height: 1.15; color: var(--white);
+  }
+  .section-title em { font-style: italic; color: var(--gold-light); }
+
+  /* ABOUT */
+  #about { background: var(--ink-2); }
+  .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+  .about-desc { margin-top: 2rem; color: var(--silver); font-size: 1rem; line-height: 1.9; }
+  .about-desc p + p { margin-top: 1.2rem; }
+  .about-right { padding-top: 1rem; }
+  .capabilities { display: flex; flex-direction: column; gap: 0; margin-top: 0.5rem; }
+  .cap-item {
+    display: grid; grid-template-columns: 2.5rem 1fr;
+    gap: 1.2rem; align-items: start;
+    padding: 1.8rem 0; border-bottom: 1px solid var(--border-subtle);
+    transition: background 0.25s;
+  }
+  .cap-item:first-child { border-top: 1px solid var(--border-subtle); }
+  .cap-num { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--gold); padding-top: 0.15rem; }
+  .cap-name { font-weight: 400; font-size: 0.95rem; color: var(--cream); letter-spacing: 0.02em; margin-bottom: 0.3rem; }
+  .cap-desc { font-size: 0.82rem; color: var(--silver); line-height: 1.7; }
+
+  /* EXPERTISE */
+  #clients { background: var(--ink); }
+  .clients-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5rem; }
+  .clients-sub { max-width: 340px; font-size: 0.9rem; color: var(--silver); line-height: 1.8; text-align: right; }
+  .tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid var(--border-subtle); }
+  .tech-cell {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--border-subtle);
+    border-bottom: 1px solid var(--border-subtle);
+    transition: background 0.3s; position: relative; overflow: hidden;
+  }
+  .tech-cell:nth-child(4n) { border-right: none; }
+  .tech-cell:nth-last-child(-n+4) { border-bottom: none; }
+  .tech-cell:hover { background: rgba(184,151,90,0.04); }
+  .tech-cell::before {
+    content: ''; position: absolute; top: 0; left: 0;
+    width: 2px; height: 0; background: var(--gold);
+    transition: height 0.35s ease;
+  }
+  .tech-cell:hover::before { height: 100%; }
+  .tech-category { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; }
+  .tech-name { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 600; color: var(--cream); margin-bottom: 0.5rem; }
+  .tech-desc { font-size: 0.78rem; color: var(--silver); line-height: 1.65; }
+  .partners-row { margin-top: 5rem; display: flex; align-items: center; gap: 0.8rem; }
+  .partners-label { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--silver); white-space: nowrap; margin-right: 1rem; }
+  .partner-pills { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .pill { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver-light); border: 1px solid var(--border-subtle); padding: 0.35rem 0.9rem; transition: border-color 0.25s, color 0.25s; }
+  .pill:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* CONTACT */
+  #contact { background: var(--ink-2); }
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+  .contact-left .section-title { margin-bottom: 1.5rem; }
+  .contact-info { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
+  .contact-row { display: flex; align-items: flex-start; gap: 1rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--border-subtle); }
+  .contact-row:last-child { border-bottom: none; }
+  .c-label { font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); min-width: 90px; padding-top: 0.1rem; }
+  .c-value { font-size: 0.92rem; color: var(--silver-light); }
+  .c-value a { color: inherit; text-decoration: none; transition: color 0.2s; }
+  .c-value a:hover { color: var(--gold); }
+  .contact-right { padding-top: 0.5rem; }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group input, .form-group textarea {
+    width: 100%; background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-subtle);
+    color: var(--cream); font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; font-weight: 300;
+    padding: 0.9rem 1.1rem; outline: none;
+    transition: border-color 0.25s, background 0.25s;
+    resize: none; cursor: none;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: var(--silver); }
+  .form-group input.error, .form-group textarea.error { border-color: #c0504a; }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--gold); background: rgba(184,151,90,0.04); }
+  .hp-field { position: absolute; left: -9999px; top: -9999px; opacity: 0; height: 0; overflow: hidden; }
+  .form-error-msg { font-size: 0.72rem; color: #e07070; margin-top: 0.75rem; display: none; letter-spacing: 0.05em; }
+  .form-submit {
+    width: 100%; margin-top: 0.5rem;
+    background: var(--gold); color: var(--ink);
+    border: none; font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 1rem 2rem; cursor: none;
+    transition: background 0.25s, transform 0.2s;
+  }
+  .form-submit:hover:not(:disabled) { background: var(--gold-light); transform: translateY(-1px); }
+  .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink); border-top: 1px solid var(--border-subtle);
+    padding: 3rem 4rem; display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-logo-container { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .footer-logo-img { height: 24px; width: auto; }
+  .footer-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--white); }
+  .footer-logo span { color: var(--gold); }
+  .footer-center { font-size: 0.7rem; letter-spacing: 0.12em; color: var(--silver); text-align: center; }
+  .footer-links { display: flex; gap: 2rem; }
+  .footer-links a { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--silver); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.75s ease, transform 0.75s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    #hero { padding: 5rem 1.5rem 3rem; min-height: auto; }
+    .hero-stats { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .tech-grid { grid-template-columns: 1fr 1fr; }
+    .clients-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    .clients-sub { text-align: left; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo-container">
+    <img src="assets/logo.png" alt="Nyio Corp Logo" class="logo-img">
+    <div class="nav-logo">
+      <span class="word-nyio">Nyio</span> <span class="word-corp">Corp</span>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#clients">Expertise</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-line"></div>
+
+  <p class="hero-tag">Enterprise Data &amp; AI</p>
+  <h1 class="hero-title">
+    Intelligent data platforms built for <em>enterprise scale</em>
+  </h1>
+  <p class="hero-sub">
+    Nyio Corp designs and delivers cloud-native data infrastructure, AI systems and real-time pipelines engineered to solve your most complex business challenges and accelerate growth at scale.
+  </p>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">AI<span>+</span></div>
+      <div class="stat-label">Native Integration</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">Cloud<span>^</span></div>
+      <div class="stat-label">Native Architecture</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">RT<span>*</span></div>
+      <div class="stat-label">Real-Time Pipelines</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-dot"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="dot">◆</span> Data Engineering</span>
+    <span class="ticker-item"><span class="dot">◆</span> Agentic AI Systems</span>
+    <span class="ticker-item"><span class="dot">◆</span> Cloud Native Architecture</span>
+    <span class="ticker-item"><span class="dot">◆</span> Real-Time Pipelines</span>
+    <span class="ticker-item"><span class="dot">◆</span> IoT Solutions</span>
+    <span class="ticker-item"><span class="dot">◆</span> Enterprise AI Integration</span>
+    <span class="ticker-item"><span class="dot">◆</span> Intelligent Data Platforms</span>
+    <span class="ticker-item"><span class="dot">◆</span> MLOps &amp; LLMOps</span>
+    <span class="ticker-item"><span class="dot">◆</span> Data Engineering</span>
+    <span class="ticker-item"><span class="dot">◆</span> Agentic AI Systems</span>
+    <span class="ticker-item"><span class="dot">◆</span> Cloud Native Architecture</span>
+    <span class="ticker-item"><span class="dot">◆</span> Real-Time Pipelines</span>
+    <span class="ticker-item"><span class="dot">◆</span> IoT Solutions</span>
+    <span class="ticker-item"><span class="dot">◆</span> Enterprise AI Integration</span>
+    <span class="ticker-item"><span class="dot">◆</span> Intelligent Data Platforms</span>
+    <span class="ticker-item"><span class="dot">◆</span> MLOps &amp; LLMOps</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-inner">
+    <div class="about-left reveal">
+      <div class="section-label">About</div>
+      <h2 class="section-title">
+        Premier data &amp; AI<br><em>consultancy</em>
+      </h2>
+      <div class="about-desc">
+        <p>Nyio Corp is a Canadian enterprise consultancy specializing in the architecture and delivery of intelligent data platforms where cloud infrastructure, real-time data and AI are unified from the ground up.</p>
+        <p>We engineer platforms with native intelligence rather than bolting AI onto existing systems. Every solution is designed for scale, velocity and adaptability from day one so your organization moves fast without accumulating technical debt.</p>
+        <p>From large enterprises to high growth ventures, we embed with leadership teams to deliver outcomes that matter: faster time to insight, operational automation and data products that compound in value over time.</p>
+      </div>
+    </div>
+    <div class="about-right reveal">
+      <div class="capabilities">
+        <div class="cap-item">
+          <span class="cap-num">01</span>
+          <div>
+            <div class="cap-name">Data Engineering</div>
+            <div class="cap-desc">Scalable ingestion, transformation and orchestration pipelines from batch to streaming, built on modern lakehouse architectures.</div>
+          </div>
+        </div>
+        <div class="cap-item">
+          <span class="cap-num">02</span>
+          <div>
+            <div class="cap-name">Agentic AI Systems</div>
+            <div class="cap-desc">Multi agent workflows, RAG platforms, LLM powered automation and production grade AI systems deployed at enterprise scale.</div>
+          </div>
+        </div>
+        <div class="cap-item">
+          <span class="cap-num">03</span>
+          <div>
+            <div class="cap-name">Cloud-Native Architecture</div>
+            <div class="cap-desc">AWS, Azure and GCP infrastructure designed for resilience, cost-efficiency and global deployment, IaC driven from the start.</div>
+          </div>
+        </div>
+        <div class="cap-item">
+          <span class="cap-num">04</span>
+          <div>
+            <div class="cap-name">Real-Time Pipelines</div>
+            <div class="cap-desc">Event driven streaming with Kafka and Spark at millisecond latency, powering dashboards, AI inference and operational systems.</div>
+          </div>
+        </div>
+        <div class="cap-item">
+          <span class="cap-num">05</span>
+          <div>
+            <div class="cap-name">IoT &amp; Edge Intelligence</div>
+            <div class="cap-desc">End to end IoT platform design covering device connectivity, edge compute, telemetry pipelines and real-time analytics for industrial environments.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERTISE -->
+<section id="clients">
+  <div class="clients-header reveal">
+    <div>
+      <div class="section-label">Technology &amp; Expertise</div>
+      <h2 class="section-title">
+        Built on the<em> best in class</em> stack
+      </h2>
+    </div>
+  </div>
+
+  <div class="tech-grid reveal">
+    <div class="tech-cell">
+      <div class="tech-category">Cloud</div>
+      <div class="tech-name">AWS / Azure / GCP</div>
+      <div class="tech-desc">Multi cloud and hybrid architectures, cloud-native services and IaC with Terraform and Pulumi.</div>
+    </div>
+    <div class="tech-cell">
+      <div class="tech-category">Data Platform</div>
+      <div class="tech-name">Databricks / Snowflake</div>
+      <div class="tech-desc">Lakehouse design, Delta Lake, data mesh patterns and enterprise grade data warehousing.</div>
+    </div>
+    <div class="tech-cell">
+      <div class="tech-category">Streaming</div>
+      <div class="tech-name">Kafka / Spark</div>
+      <div class="tech-desc">Real-time event streaming, microbatch pipelines and complex event processing at enterprise scale.</div>
+    </div>
+    <div class="tech-cell">
+      <div class="tech-category">AI / ML</div>
+      <div class="tech-name">LLMs &amp; Agents</div>
+      <div class="tech-desc">OpenAI, Anthropic and open-source models with RAG, fine-tuning, agentic frameworks and MLOps.</div>
+    </div>
+    <div class="tech-cell">
+      <div class="tech-category">Orchestration</div>
+      <div class="tech-name">Airflow / dbt</div>
+      <div class="tech-desc">Workflow orchestration, data transformation, lineage tracking and analytics engineering best practices.</div>
+    </div>
+    <div class="tech-cell">
+      <div class="tech-category">Containers</div>
+      <div class="tech-name">Kubernetes / Docker</div>
+      <div class="tech-desc">Cloud-native deployment, microservices, service meshes and GitOps driven CI/CD pipelines.</div>
+    </div>
+    <div class="tech-cell">
+      <div class="tech-category">IoT</div>
+      <div class="tech-name">Edge &amp; Embedded</div>
+      <div class="tech-desc">MQTT, device management, edge inference and industrial protocol integration.</div>
+    </div>
+    <div class="tech-cell">
+      <div class="tech-category">Observability</div>
+      <div class="tech-name">DataOps &amp; Governance</div>
+      <div class="tech-desc">Data quality frameworks, lineage, cataloging, compliance and real-time monitoring stacks.</div>
+    </div>
+  </div>
+
+  <!-- <div class="partners-row reveal">
+    <span class="partners-label">Works with</span>
+    <div class="partner-pills">
+      <span class="pill">AWS</span>
+      <span class="pill">Azure</span>
+      <span class="pill">Google Cloud</span>
+      <span class="pill">Databricks</span>
+      <span class="pill">Snowflake</span>
+      <span class="pill">Confluent</span>
+      <span class="pill">Terraform</span>
+      <span class="pill">OpenAI</span>
+      <span class="pill">Anthropic</span>
+      <span class="pill">Kubernetes</span>
+      <span class="pill">Apache Kafka</span>
+    </div>
+  </div> -->
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-left reveal">
+      <div class="section-label">Contact</div>
+      <h2 class="section-title">
+        Let's <em>build</em>
+      </h2>
+      <p style="margin-top:1.5rem;color:var(--silver);font-size:0.95rem;line-height:1.85;max-width:380px;">
+        Whether you are architecting a new data platform, scaling AI across your enterprise or tackling a complex engineering challenge, we would like to hear about it.
+      </p>
+      <div class="contact-info">
+        <div class="contact-row">
+          <span class="c-label">Inquiries</span>
+          <span class="c-value"><a href="mailto:info@nyiocorp.com">info@nyiocorp.com</a></span>
+        </div>
+        <div class="contact-row">
+          <span class="c-label">Engagements</span>
+          <span class="c-value">Enterprise Projects · Advisory · Architecture Review</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-right reveal">
+      <form id="contactForm" onsubmit="handleSubmit(event)" novalidate>
+        <div class="hp-field" aria-hidden="true">
+          <input type="text" name="website" id="hp_website" tabindex="-1" autocomplete="off" />
+        </div>
+        <input type="hidden" id="formTimestamp" name="_t" />
+
+        <div class="form-group">
+          <input type="text" id="f_name" name="name" placeholder="Name *" autocomplete="name" required />
+        </div>
+        <div class="form-group">
+          <input type="email" id="f_email" name="email" placeholder="Email *" autocomplete="email" required />
+        </div>
+        <div class="form-group">
+          <input type="text" id="f_company" name="company" placeholder="Company (optional)" autocomplete="organization" />
+        </div>
+        <div class="form-group">
+          <input type="tel" id="f_phone" name="phone" placeholder="Phone (optional)" autocomplete="tel" />
+        </div>
+        <div class="form-group">
+          <textarea id="f_message" name="message" rows="5" placeholder="Message *" required></textarea>
+        </div>
+
+        <div class="form-error-msg" id="formError"></div>
+        <button type="submit" class="form-submit" id="submitBtn">Send Message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#hero" class="footer-logo-container">
+    <img src="assets/logo.png" alt="Nyio Corp Logo" class="footer-logo-img">
+    <!-- <div class="footer-logo">Nyio<span>.</span></div> -->
+  </a>
+  <div class="footer-center">
+    &copy; <span id="copyrightYear"></span> Nyio Corp. All rights reserved.
+  </div>
+  <div class="footer-links">
+    <!-- <a href="#about">About</a>
+    <a href="#clients">Expertise</a>
+    <a href="#contact">Contact</a> -->
+  </div>
+</footer>
+
+<script>
+  // Dynamic year
+  document.getElementById('copyrightYear').textContent = new Date().getFullYear();
+
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+  (function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  })();
+  document.querySelectorAll('a, button, input, textarea, .tech-cell, .cap-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+      ring.style.width = '48px'; ring.style.height = '48px';
+      ring.style.borderColor = 'rgba(184,151,90,0.8)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+      ring.style.width = '32px'; ring.style.height = '32px';
+      ring.style.borderColor = 'rgba(184,151,90,0.5)';
+    });
+  });
+
+  // Scroll nav
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Form init
+  (function initForm() {
+    const ts = document.getElementById('formTimestamp');
+    if (ts) ts.value = Date.now();
+  })();
+
+  let submitCount = 0;
+
+  function showError(msg) {
+    const el = document.getElementById('formError');
+    el.textContent = msg; el.style.display = 'block';
+  }
+  function clearError() {
+    document.getElementById('formError').style.display = 'none';
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    clearError();
+    const form = e.target;
+    const btn = document.getElementById('submitBtn');
+
+    // Honeypot
+    if (document.getElementById('hp_website').value !== '') {
+      btn.textContent = 'Message Sent ✓';
+      setTimeout(() => { btn.textContent = 'Send Message →'; form.reset(); }, 3000);
+      return;
+    }
+
+    // Timing check
+    const elapsed = Date.now() - parseInt(document.getElementById('formTimestamp').value || '0');
+    if (elapsed < 3000) { showError('Please take a moment to fill in the form.'); return; }
+
+    // Rate limit
+    if (submitCount >= 3) {
+      showError('Too many submissions. Please email us directly at hello@nyiocorp.com');
+      btn.disabled = true; return;
+    }
+
+    // Validation
+    const name = document.getElementById('f_name').value.trim();
+    const email = document.getElementById('f_email').value.trim();
+    const message = document.getElementById('f_message').value.trim();
+
+    if (!name) { document.getElementById('f_name').classList.add('error'); showError('Please enter your name.'); return; }
+    document.getElementById('f_name').classList.remove('error');
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { document.getElementById('f_email').classList.add('error'); showError('Please enter a valid email address.'); return; }
+    document.getElementById('f_email').classList.remove('error');
+
+    if (message.length < 10) { document.getElementById('f_message').classList.add('error'); showError('Please include a brief message.'); return; }
+    document.getElementById('f_message').classList.remove('error');
+
+    const phone = document.getElementById('f_phone').value.trim();
+    if (phone && !/^[\d\s\+\-\(\)\.]{6,20}$/.test(phone)) { document.getElementById('f_phone').classList.add('error'); showError('Please enter a valid phone number.'); return; }
+    document.getElementById('f_phone').classList.remove('error');
+
+    // Success
+    submitCount++;
+    btn.textContent = 'Message Sent ✓';
+    btn.style.background = '#4a7c59';
+    btn.style.color = '#fff';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      btn.textContent = 'Send Message →';
+      btn.style.background = ''; btn.style.color = '';
+      btn.disabled = false;
+      form.reset();
+      const ts = document.getElementById('formTimestamp');
+      if (ts) ts.value = Date.now();
+    }, 4000);
+  }
+</script>
+</body>
+</html>
