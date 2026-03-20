@@ -7,7 +7,7 @@
 
 <link rel="icon" type="image/png" href="assets/logo.png">
 <link rel="apple-touch-icon" href="assets/logo.png">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a0a0f'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='Georgia,serif' font-weight='700' fill='%23b8975a'>N</text></svg>">
+<!-- <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='12' fill='%230a0a0f'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='Georgia,serif' font-weight='700' fill='%23b8975a'>N</text></svg>"> -->
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -579,7 +579,7 @@
       <div class="contact-info">
         <div class="contact-row">
           <span class="c-label">Inquiries</span>
-          <span class="c-value"><a href="mailto:info@nyiocorp.com">info@nyiocorp.com</a></span>
+          <span class="c-value"><a href="mailto:naveen@nyiocorp.com">info@nyiocorp.com</a></span>
         </div>
         <div class="contact-row">
           <span class="c-label">Engagements</span>
@@ -589,7 +589,7 @@
     </div>
 
     <div class="contact-right reveal">
-      <form id="contactForm" onsubmit="handleSubmit(event)" novalidate>
+      <form id="contactForm" action="https://formspree.io/f/xbdzbyag" method="POST" onsubmit="handleSubmit(event)">
         <div class="hp-field" aria-hidden="true">
           <input type="text" name="website" id="hp_website" tabindex="-1" autocomplete="off" />
         </div>
@@ -633,7 +633,6 @@
     <a href="#contact">Contact</a> -->
   </div>
 </footer>
-
 <script>
   // Dynamic year
   document.getElementById('copyrightYear').textContent = new Date().getFullYear();
@@ -695,10 +694,11 @@
 
   function showError(msg) {
     const el = document.getElementById('formError');
-    el.textContent = msg; el.style.display = 'block';
+    if (el) { el.textContent = msg; el.style.display = 'block'; }
   }
   function clearError() {
-    document.getElementById('formError').style.display = 'none';
+    const el = document.getElementById('formError');
+    if (el) el.style.display = 'none';
   }
 
   function handleSubmit(e) {
@@ -720,7 +720,7 @@
 
     // Rate limit
     if (submitCount >= 3) {
-      showError('Too many submissions. Please email us directly at hello@nyiocorp.com');
+      showError('Too many submissions. Please email us directly at naveen@nyiocorp.com');
       btn.disabled = true; return;
     }
 
@@ -742,21 +742,44 @@
     if (phone && !/^[\d\s\+\-\(\)\.]{6,20}$/.test(phone)) { document.getElementById('f_phone').classList.add('error'); showError('Please enter a valid phone number.'); return; }
     document.getElementById('f_phone').classList.remove('error');
 
-    // Success
+    // --- Start Email Submission Logic ---
     submitCount++;
-    btn.textContent = 'Message Sent ✓';
-    btn.style.background = '#4a7c59';
-    btn.style.color = '#fff';
+    const originalText = btn.textContent;
+    btn.textContent = 'Sending...';
     btn.disabled = true;
 
-    setTimeout(() => {
-      btn.textContent = 'Send Message →';
-      btn.style.background = ''; btn.style.color = '';
+    const formData = new FormData(form);
+
+    fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
+      }
+    }).then(response => {
+      if (response.ok) {
+        btn.textContent = 'Message Sent ✓';
+        btn.style.background = '#4a7c59';
+        btn.style.color = '#fff';
+        form.reset();
+      } else {
+        showError('Oops! Problem sending. Please email naveen@nyiocorp.com');
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
+    }).catch(error => {
+      showError('Network error. Please try again.');
+      btn.textContent = originalText;
       btn.disabled = false;
-      form.reset();
-      const ts = document.getElementById('formTimestamp');
-      if (ts) ts.value = Date.now();
-    }, 4000);
+    }).finally(() => {
+      setTimeout(() => {
+        btn.textContent = 'Send Message →';
+        btn.style.background = ''; btn.style.color = '';
+        btn.disabled = false;
+        const ts = document.getElementById('formTimestamp');
+        if (ts) ts.value = Date.now();
+      }, 5000);
+    });
   }
 </script>
 </body>
